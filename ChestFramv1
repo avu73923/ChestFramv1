@@ -20,11 +20,11 @@ require(game.ReplicatedStorage:WaitForChild("Notification")).new(
         ):Display()
 
 require(game.ReplicatedStorage:WaitForChild("Notification")).new(
-            " <Color=Green>Welcome to Tboy Roblox Community<Color=/> "
+            " <Color=Green>Welcome to Việt Hoàng iOS<Color=/> "
         ):Display()
 
 require(game.ReplicatedStorage:WaitForChild("Notification")).new(
-            " <Color=Yellow>https://discord.gg/nhwUXhzd<Color=/> "
+            " <Color=Yellow>https://discord.gg/4dpC8WXD<Color=/> "
         ):Display()
 		
 local MaxSpeed = 230 -- Studs per second 400 no flag but kick
