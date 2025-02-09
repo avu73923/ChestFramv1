@@ -1,8 +1,8 @@
--- Phát nhạc khi mã chạy (ID nhạc khi chạy mã là 1845922899)
+-- Phát nhạc khi mã chạy (ID nhạc khi chạy mã là 7634196777)
 local joinSound = Instance.new("Sound")
 joinSound.Name = "JoinSound"
-joinSound.SoundId = "rbxassetid://1845922899" -- ID nhạc khi chạy mã
-joinSound.Volume = 3
+joinSound.SoundId = "rbxassetid://7634196777" -- ID nhạc khi chạy mã
+joinSound.Volume = 5
 joinSound.Looped = false
 joinSound.Parent = workspace
 joinSound:Play()
