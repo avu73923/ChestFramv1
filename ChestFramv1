@@ -26,6 +26,10 @@ require(game.ReplicatedStorage:WaitForChild("Notification")).new(
 require(game.ReplicatedStorage:WaitForChild("Notification")).new(
             " <Color=Yellow>https://discord.gg/4dpC8WXD<Color=/> "
         ):Display()
+
+require(game.ReplicatedStorage:WaitForChild("Notification")).new(
+            " <Color=Yellow>Thằng nào đọc làm chó<Color=/> "
+        ):Display()
 		
 local MaxSpeed = 350 -- Studs per second 400 no flag but kick
 
