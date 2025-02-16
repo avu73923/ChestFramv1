@@ -1,0 +1,75 @@
+-- Load thư viện Orion UI
+local OrionLib = loadstring(game:HttpGet("https://raw.githubusercontent.com/shlexware/Orion/main/source"))()
+local Window = OrionLib:MakeWindow({Name = "Auto Chest Collector", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionUI"})
+
+-- Khai báo các Service
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+local Workspace = game:GetService("Workspace")
+local RunService = game:GetService("RunService")
+
+-- Biến trạng thái Auto
+local AutoCollect = false
+
+-- Hàm tìm rương gần nhất
+local function findChest()
+    for _, chest in pairs(Workspace:GetChildren()) do
+        if chest:IsA("Model") and chest:FindFirstChild("PrimaryPart") and string.find(chest.Name:lower(), "chest") then
+            return chest
+        end
+    end
+    return nil
+end
+
+-- Hàm dịch chuyển mượt (Bypass TP)
+local function smoothTP(targetPos)
+    local character = LocalPlayer.Character
+    if character and character:FindFirstChild("HumanoidRootPart") then
+        local hrp = character.HumanoidRootPart
+        local step = (targetPos - hrp.Position).Unit * 5 -- Dịch chuyển từng bước nhỏ
+        for i = 1, (targetPos - hrp.Position).Magnitude / 5 do
+            hrp.CFrame = hrp.CFrame + step
+            task.wait(0.1) -- Chờ để tránh bị phát hiện
+        end
+        hrp.CFrame = CFrame.new(targetPos)
+    end
+end
+
+-- Hàm reset nhân vật
+local function resetCharacter()
+    LocalPlayer.Character:BreakJoints()
+end
+
+-- Chạy Auto Nhặt Rương
+RunService.Heartbeat:Connect(function()
+    if AutoCollect then
+        local chest = findChest()
+        if chest then
+            print("Đang nhặt rương:", chest.Name)
+            smoothTP(chest.PrimaryPart.Position) -- Dịch chuyển đến rương an toàn
+            task.wait(1)
+            firetouchinterest(LocalPlayer.Character.HumanoidRootPart, chest.PrimaryPart, 0)
+            firetouchinterest(LocalPlayer.Character.HumanoidRootPart, chest.PrimaryPart, 1)
+            task.wait(1)
+            resetCharacter() -- Reset sau khi nhặt để tránh phát hiện
+        end
+    end
+end)
+
+-- UI Menu
+local MainTab = Window:MakeTab({
+    Name = "Main",
+    Icon = "rbxassetid://4483345998",
+    PremiumOnly = false
+})
+
+MainTab:AddToggle({
+    Name = "Auto Nhặt Rương (Bypass TP + Reset)",
+    Default = false,
+    Callback = function(state)
+        AutoCollect = state
+    end
+})
+
+-- Hiển thị UI
+OrionLib:Init()
