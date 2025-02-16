@@ -1,0 +1,99 @@
+-- Tạo biến
+local player = game.Players.LocalPlayer
+local playerGui = player:WaitForChild("PlayerGui")
+local tweenService = game:GetService("TweenService")
+local userInputService = game:GetService("UserInputService")
+
+-- Tạo GUI chính
+local screenGui = Instance.new("ScreenGui")
+screenGui.Parent = playerGui
+
+local mainFrame = Instance.new("Frame")
+mainFrame.Size = UDim2.new(0, 300, 0, 400)
+mainFrame.Position = UDim2.new(0.5, -150, 0.5, -200)
+mainFrame.BackgroundColor3 = Color3.fromRGB(30, 30, 30)
+mainFrame.Visible = false
+mainFrame.Parent = screenGui
+
+-- Hiệu ứng mở/tắt menu
+local function toggleMenu()
+    if mainFrame.Visible then
+        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = tweenService:Create(mainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 0)})
+        tween:Play()
+        tween.Completed:Wait()
+        mainFrame.Visible = false
+    else
+        mainFrame.Size = UDim2.new(0, 300, 0, 0)
+        mainFrame.Visible = true
+        local tweenInfo = TweenInfo.new(0.3, Enum.EasingStyle.Quad, Enum.EasingDirection.Out)
+        local tween = tweenService:Create(mainFrame, tweenInfo, {Size = UDim2.new(0, 300, 0, 400)})
+        tween:Play()
+    end
+end
+
+-- Nút mở menu
+local openButton = Instance.new("TextButton")
+openButton.Size = UDim2.new(0, 100, 0, 50)
+openButton.Position = UDim2.new(0.9, -110, 0.1, 0)
+openButton.Text = "Open Menu"
+openButton.BackgroundColor3 = Color3.fromRGB(0, 170, 255)
+openButton.Parent = screenGui
+openButton.MouseButton1Click:Connect(toggleMenu)
+
+-- Nút đóng menu
+local closeButton = Instance.new("TextButton")
+closeButton.Size = UDim2.new(0, 100, 0, 30)
+closeButton.Position = UDim2.new(0.5, -50, 0.9, 0)
+closeButton.Text = "Close"
+closeButton.BackgroundColor3 = Color3.fromRGB(255, 0, 0)
+closeButton.Parent = mainFrame
+closeButton.MouseButton1Click:Connect(toggleMenu)
+
+-- Chức năng mở menu bằng phím tắt (F)
+userInputService.InputBegan:Connect(function(input, gameProcessed)
+    if not gameProcessed and input.KeyCode == Enum.KeyCode.F then
+        toggleMenu()
+    end
+end)
+
+-- Thêm các chức năng chính
+local function autoFarm()
+    print("Auto Farm Activated")
+    -- Viết code Auto Farm tại đây
+end
+
+local function autoChest()
+    print("Auto Chest Activated")
+    -- Viết code Auto Chest tại đây
+end
+
+local function teleportToIsland()
+    print("Teleport to Island Activated")
+    -- Viết code Teleport tại đây
+end
+
+-- Thêm các nút chức năng vào menu
+local autoFarmButton = Instance.new("TextButton")
+autoFarmButton.Size = UDim2.new(0, 250, 0, 40)
+autoFarmButton.Position = UDim2.new(0.5, -125, 0.2, 0)
+autoFarmButton.Text = "Auto Farm"
+autoFarmButton.BackgroundColor3 = Color3.fromRGB(0, 255, 0)
+autoFarmButton.Parent = mainFrame
+autoFarmButton.MouseButton1Click:Connect(autoFarm)
+
+local autoChestButton = Instance.new("TextButton")
+autoChestButton.Size = UDim2.new(0, 250, 0, 40)
+autoChestButton.Position = UDim2.new(0.5, -125, 0.35, 0)
+autoChestButton.Text = "Auto Chest"
+autoChestButton.BackgroundColor3 = Color3.fromRGB(255, 165, 0)
+autoChestButton.Parent = mainFrame
+autoChestButton.MouseButton1Click:Connect(autoChest)
+
+local teleportButton = Instance.new("TextButton")
+teleportButton.Size = UDim2.new(0, 250, 0, 40)
+teleportButton.Position = UDim2.new(0.5, -125, 0.5, 0)
+teleportButton.Text = "Teleport to Island"
+teleportButton.BackgroundColor3 = Color3.fromRGB(0, 0, 255)
+teleportButton.Parent = mainFrame
+teleportButton.MouseButton1Click:Connect(teleportToIsland)
