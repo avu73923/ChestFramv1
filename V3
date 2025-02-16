@@ -1,0 +1,56 @@
+
+-- Tạo biến
+local player = game.Players.LocalPlayer
+local character = player.Character or player.CharacterAdded:Wait()
+local humanoidRootPart = character:WaitForChild("HumanoidRootPart")
+local tweenService = game:GetService("TweenService")
+local collectedChests = 0
+
+-- Tạo GUI đơn giản
+local screenGui = Instance.new("ScreenGui", player:WaitForChild("PlayerGui"))
+local openButton = Instance.new("TextButton", screenGui)
+openButton.Size = UDim2.new(0, 100, 0, 50)
+openButton.Position = UDim2.new(0.5, -50, 0.9, 0)
+openButton.Text = "Auto Collect All"
+openButton.BackgroundColor3 = Color3.new(0, 1, 0)
+
+-- Hàm tìm tất cả rương trên tất cả đảo và biển
+local function findAllChests()
+    local chests = {}
+    for _, island in pairs(workspace:GetChildren()) do
+        if island:IsA("Model") and island:FindFirstChild("Chests") then
+            for _, chest in pairs(island.Chests:GetChildren()) do
+                if chest:IsA("Model") and chest:FindFirstChild("TouchPart") then
+                    table.insert(chests, chest)
+                end
+            end
+        end
+    end
+    return chests
+end
+
+-- Hàm tween đến rương
+local function tweenToChest(chest)
+    if chest then
+        local goal = {}
+        goal.Position = chest.TouchPart.Position + Vector3.new(0, 3, 0)
+        local tweenInfo = TweenInfo.new(2, Enum.EasingStyle.Linear)
+        local tween = tweenService:Create(humanoidRootPart, tweenInfo, goal)
+        tween:Play()
+        tween.Completed:Wait()
+        collectedChests = collectedChests + 1
+    end
+end
+
+-- Hàm chạy auto nhặt rương toàn map
+local function autoCollectAll()
+    collectedChests = 0
+    local chests = findAllChests()
+    for _, chest in ipairs(chests) do
+        tweenToChest(chest)
+        wait(1)
+    end
+end
+
+-- Gán sự kiện cho nút bấm
+openButton.MouseButton1Click:Connect(autoCollectAll)
